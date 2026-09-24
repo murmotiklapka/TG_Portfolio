@@ -60,8 +60,8 @@ class DB_Manager:
 
     def insert_project(self, data):
         sql = """INSERT INTO projects 
-        (user_id, project_name, url, status_id) 
-        values(?, ?, ?, ?)"""
+        (user_id, project_name, description, url, status_id) 
+        values(?, ?, ?, ?, ?)"""
         self.__executemany(sql, data)
 
 
@@ -135,17 +135,27 @@ if __name__ == '__main__':
     manager = DB_Manager(DATABASE)
     manager.create_tables()
     manager.default_insert()
-    data_ = (1, 'Test Project', 'https', 1)
-    data2_ = (1, 'Test Project2', 'https', 2)
-    manager.insert_project([data_])
-    manager.insert_skill(1, 'Test Project', 'Python')
-    print(manager.get_statuses())
-    print(manager.get_status_id('В процессе разработки'))
-    print(manager.get_projects(1))
-    print(manager.get_project_id('Test Project', 1))
-    print(manager.get_skills())
-    print(manager.get_project_skills('Test Project'))
-    print(manager.get_project_info(1, 'Test Project'))
-    manager.update_projects('description', ('Updated description', 'Test Project', 1))
-    manager.delete_skill('Python', 1)
-    manager.delete_project(1, 1)
+    # data_ = (1, 'Test Project', 'https', 1)
+    # data2_ = (1, 'Test Project2', 'https', 2)
+    # manager.insert_project([data_])
+    # manager.insert_skill(1, 'Test Project', 'Python')
+    # print(manager.get_statuses())
+    # print(manager.get_status_id('В процессе разработки'))
+    # print(manager.get_projects(1))
+    # print(manager.get_project_id('Test Project', 1))
+    # print(manager.get_skills())
+    # print(manager.get_project_skills('Test Project'))
+    # print(manager.get_project_info(1, 'Test Project'))
+    # manager.update_projects('description', ('Updated description', 'Test Project', 1))
+    # manager.delete_skill('Python', 1)
+    # manager.delete_project(1, 1)
+
+    manager.insert_project([(1, 'TG_Portfolio', 'Моё портфолио дб с выводом в тг', 'https://github.com/murmotiklapka/TG_Portfolio.git', 2)])
+    manager.insert_project([(1, 'TG_Pokemon', 'Игра про покемонов', 'https://github.com/murmotiklapka/TG_Pokemon.git', 5)])
+    manager.insert_project([(1, 'TG-bot-', 'Определяет вид техники', 'https://github.com/murmotiklapka/TG-bot-.git', 5)])
+    manager.insert_project([(1, 'finall-progect', 'Опредиление углеродного следа оставляймым вами', 'https://github.com/murmotiklapka/finall-progect.git', 5)])
+    manager.insert_project([(1, 'TG_Translate', 'Транслейт', 'https://github.com/murmotiklapka/TG_Translate.git', 3)])
+    manager.insert_project([(1, 'TG-ban', 'I ban you', 'https://github.com/murmotiklapka/TG-ban.git', 5)])
+    manager.insert_project([(1, 'TG_Viktorina', 'Просто викторина', 'https://github.com/murmotiklapka/TG_Viktorina.git', 5)])
+    manager.insert_project([(1, 'micro-site0-2', '', 'https://github.com/murmotiklapka/micro-site0-2.git', 3)])
+    manager.insert_project([(1, '-_', '', 'https://github.com/murmotiklapka/-_.git', 3)])
