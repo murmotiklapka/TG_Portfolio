@@ -48,7 +48,18 @@ class DB_Manager:
             cur = conn.cursor()
             cur.execute(sql, data)
             return cur.fetchall()
-        
+
+    def alter_table(self, table_name, new_column_name, new_column_type):
+        conn = sqlite3.connect(self.database)
+        with conn:
+            conn.execute(f"ALTER TABLE {table_name} ADD COLUMN {new_column_name} {new_column_type}")
+
+    def drop_tables(self, table_names):
+        conn = sqlite3.connect(self.database)
+        with conn:
+            conn.execute(f"DROP TABLE IF EXISTS {table_names}")
+
+            
     def default_insert(self):
         sql = 'INSERT OR IGNORE INTO skills (skill_name) values(?)'
         data = skills
@@ -60,8 +71,8 @@ class DB_Manager:
 
     def insert_project(self, data):
         sql = """INSERT INTO projects 
-        (user_id, project_name, description, url, status_id) 
-        values(?, ?, ?, ?, ?)"""
+        (user_id, project_name, description, url, foto,  status_id) 
+        values(?, ?, ?, ?, ?, ?)"""
         self.__executemany(sql, data)
 
 
@@ -150,12 +161,13 @@ if __name__ == '__main__':
     # manager.delete_skill('Python', 1)
     # manager.delete_project(1, 1)
 
-    manager.insert_project([(1, 'TG_Portfolio', 'Моё портфолио дб с выводом в тг', 'https://github.com/murmotiklapka/TG_Portfolio.git', 2)])
-    manager.insert_project([(1, 'TG_Pokemon', 'Игра про покемонов', 'https://github.com/murmotiklapka/TG_Pokemon.git', 5)])
-    manager.insert_project([(1, 'TG-bot-', 'Определяет вид техники', 'https://github.com/murmotiklapka/TG-bot-.git', 5)])
-    manager.insert_project([(1, 'finall-progect', 'Опредиление углеродного следа оставляймым вами', 'https://github.com/murmotiklapka/finall-progect.git', 5)])
-    manager.insert_project([(1, 'TG_Translate', 'Транслейт', 'https://github.com/murmotiklapka/TG_Translate.git', 3)])
-    manager.insert_project([(1, 'TG-ban', 'I ban you', 'https://github.com/murmotiklapka/TG-ban.git', 5)])
-    manager.insert_project([(1, 'TG_Viktorina', 'Просто викторина', 'https://github.com/murmotiklapka/TG_Viktorina.git', 5)])
-    manager.insert_project([(1, 'micro-site0-2', '', 'https://github.com/murmotiklapka/micro-site0-2.git', 3)])
-    manager.insert_project([(1, '-_', '', 'https://github.com/murmotiklapka/-_.git', 3)])
+    manager.alter_table('projects', 'foto', 'TEXT')
+    manager.insert_project([(1, 'TG_Portfolio', 'Моё портфолио дб с выводом в тг', 'https://github.com/murmotiklapka/TG_Portfolio.git', 'https://github.com/murmotiklapka/TG_Portfolio/blob/main/shot_260924_213036.png', 2)])
+    manager.insert_project([(1, 'TG_Pokemon', 'Игра про покемонов', 'https://github.com/murmotiklapka/TG_Pokemon.git', 'https://github.com/murmotiklapka/TG_Pokemon/blob/main/shot_260924_213316.png', 5)])
+    manager.insert_project([(1, 'TG-bot-', 'Определяет вид техники', 'https://github.com/murmotiklapka/TG-bot-.git', 'https://github.com/murmotiklapka/TG-bot-/blob/main/shot_260924_213456.png', 5)])
+    manager.insert_project([(1, 'finall-progect', 'Опредиление углеродного следа оставляймым вами', 'https://github.com/murmotiklapka/finall-progect.git', 'https://github.com/murmotiklapka/finall-progect/blob/main/shot_260924_213545.png', 5)])
+    manager.insert_project([(1, 'TG_Translate', 'Транслейт', 'https://github.com/murmotiklapka/TG_Translate.git', 'https://github.com/murmotiklapka/TG_Translate/blob/main/shot_260924_213633.png', 3)])
+    manager.insert_project([(1, 'TG-ban', 'I ban you', 'https://github.com/murmotiklapka/TG-ban.git', 'https://github.com/murmotiklapka/TG-ban/blob/main/shot_260924_213722.png', 5)])
+    manager.insert_project([(1, 'TG_Viktorina', 'Просто викторина', 'https://github.com/murmotiklapka/TG_Viktorina.git', 'https://github.com/murmotiklapka/TG_Viktorina/blob/main/shot_260924_213811.png', 5)])
+    manager.insert_project([(1, 'micro-site0-2', '', 'https://github.com/murmotiklapka/micro-site0-2.git', 'https://github.com/murmotiklapka/micro-site0-2/blob/main/shot_260924_213900.png', 3)])
+    manager.insert_project([(1, '-_', '', 'https://github.com/murmotiklapka/-_.git', 'https://github.com/murmotiklapka/-_/blob/main/shot_260924_213945.png', 3)])
