@@ -103,7 +103,9 @@ class DB_Manager:
         return self.__select_data(sql, data = (user_id,))
         
     def get_project_id(self, project_name, user_id):
-        return self.__select_data(sql='SELECT project_id FROM projects WHERE project_name = ? AND user_id = ?  ', data = (project_name, user_id,))[0][0]
+        print(self.__select_data(sql='SELECT project_id FROM projects WHERE project_name = ? AND user_id = ?  ', data = (project_name, user_id,))[0][0])
+        ret = self.__select_data(sql='SELECT project_id FROM projects WHERE project_name = ? AND user_id = ?  ', data = (project_name, user_id,))
+        return ret[0][0]
         
     def get_skills(self):
         return self.__select_data(sql='SELECT * FROM skills')
@@ -125,10 +127,25 @@ class DB_Manager:
         return self.__select_data(sql=sql, data = (project_name, user_id))
 
 
+    def get_skill_id(self, skill_name):
+        sql = 'SELECT skill_id FROM skills WHERE skill_name = ?'
+        return self.__select_data(sql, (skill_name,))
+
     def update_projects(self, param, data):
         sql = f"""UPDATE projects SET {param} = ? 
         WHERE project_name = ? AND user_id = ?"""
         self.__executemany(sql, [data]) 
+
+    def delete_skill_from_project(self, user_id, project_name, skill_name):
+        project_id = self.get_project_id(project_name, user_id)
+        skill_id = self.get_skill_id(skill_name)[0][0]
+        sql = """DELETE FROM project_skills
+            WHERE project_id = ? AND skill_id = ?"""
+        self.__executemany(sql, [(project_id, skill_id)])
+
+    def get_projekts_skills_id(self):
+        sql = """SELECT skills_id * FROM project_skills"""
+        return self.__select_data(sql)
 
 
     def delete_project(self, user_id, project_id):
@@ -146,6 +163,7 @@ if __name__ == '__main__':
     manager = DB_Manager(DATABASE)
     manager.create_tables()
     manager.default_insert()
+    manager.alter_table('projects', 'foto', 'TEXT')
     # data_ = (1, 'Test Project', 'https', 1)
     # data2_ = (1, 'Test Project2', 'https', 2)
     # manager.insert_project([data_])
@@ -161,13 +179,12 @@ if __name__ == '__main__':
     # manager.delete_skill('Python', 1)
     # manager.delete_project(1, 1)
 
-    manager.alter_table('projects', 'foto', 'TEXT')
-    manager.insert_project([(1, 'TG_Portfolio', 'Моё портфолио дб с выводом в тг', 'https://github.com/murmotiklapka/TG_Portfolio.git', 'https://github.com/murmotiklapka/TG_Portfolio/blob/main/shot_260924_213036.png', 2)])
-    manager.insert_project([(1, 'TG_Pokemon', 'Игра про покемонов', 'https://github.com/murmotiklapka/TG_Pokemon.git', 'https://github.com/murmotiklapka/TG_Pokemon/blob/main/shot_260924_213316.png', 5)])
-    manager.insert_project([(1, 'TG-bot-', 'Определяет вид техники', 'https://github.com/murmotiklapka/TG-bot-.git', '', 5)])
-    manager.insert_project([(1, 'finall-progect', 'Опредиление углеродного следа оставляймым вами', 'https://github.com/murmotiklapka/finall-progect.git', '', 5)])
-    manager.insert_project([(1, 'TG_Translate', 'Транслейт', 'https://github.com/murmotiklapka/TG_Translate.git', '', 3)])
-    manager.insert_project([(1, 'TG-ban', 'I ban you', 'https://github.com/murmotiklapka/TG-ban.git', '', 5)])
-    manager.insert_project([(1, 'TG_Viktorina', 'Просто викторина', 'https://github.com/murmotiklapka/TG_Viktorina.git', '', 5)])
-    manager.insert_project([(1, 'micro-site0-2', '', 'https://github.com/murmotiklapka/micro-site0-2.git', '', 3)])
-    manager.insert_project([(1, '-_', '', 'https://github.com/murmotiklapka/-_.git', '', 3)])
+    # manager.insert_project([(1, 'TG_Portfolio', 'Моё портфолио дб с выводом в тг', 'https://github.com/murmotiklapka/TG_Portfolio.git', 'https://github.com/murmotiklapka/TG_Portfolio/blob/main/shot_260924_213036.png', 2)])
+    # manager.insert_project([(1, 'TG_Pokemon', 'Игра про покемонов', 'https://github.com/murmotiklapka/TG_Pokemon.git', 'https://github.com/murmotiklapka/TG_Pokemon/blob/main/shot_260924_213316.png', 5)])
+    # manager.insert_project([(1, 'TG-bot-', 'Определяет вид техники', 'https://github.com/murmotiklapka/TG-bot-.git', '', 5)])
+    # manager.insert_project([(1, 'finall-progect', 'Опредиление углеродного следа оставляймым вами', 'https://github.com/murmotiklapka/finall-progect.git', '', 5)])
+    # manager.insert_project([(1, 'TG_Translate', 'Транслейт', 'https://github.com/murmotiklapka/TG_Translate.git', '', 3)])
+    # manager.insert_project([(1, 'TG-ban', 'I ban you', 'https://github.com/murmotiklapka/TG-ban.git', '', 5)])
+    # manager.insert_project([(1, 'TG_Viktorina', 'Просто викторина', 'https://github.com/murmotiklapka/TG_Viktorina.git', '', 5)])
+    # manager.insert_project([(1, 'micro-site0-2', '', 'https://github.com/murmotiklapka/micro-site0-2.git', '', 3)])
+    # manager.insert_project([(1, '-_', '', 'https://github.com/murmotiklapka/-_.git', '', 3)])
